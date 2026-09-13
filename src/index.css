@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+/* ============================================================
+   GLOBAL PAGE SCROLLBAR — FULLY HIDDEN
+   Page still scrolls, but no scrollbar is visible.
+   ============================================================ */
+
+html.hide-scrollbar,
+body.hide-scrollbar {
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE / Edge */
+}
+
+html.hide-scrollbar::-webkit-scrollbar,
+body.hide-scrollbar::-webkit-scrollbar {
+  display: none;                /* Chrome / Safari / Edge */
+}
+
+/* ============================================================
+   INNER SCROLL CONTAINERS
+   Apply .hide-scrollbar to any div that scrolls internally
+   (e.g. modals, side panels, chat boxes, dropdowns).
+   ============================================================ */
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
