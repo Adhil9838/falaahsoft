@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import logoHover from '../assets/hoverlogo.png';
+
+interface DropdownItem {
+  label: string;
+  href: string;
+}
 
 interface NavItem {
   label: string;
   href: string;
   hasDropdown?: boolean;
-  dropdownItems?: string[];
+  dropdownItems?: DropdownItem[];
 }
 
 const Header: React.FC = () => {
@@ -14,6 +20,14 @@ const Header: React.FC = () => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLogoHovered, setIsLogoHovered] = useState(false);
+
+  const location = useLocation();
+
+  // Close mobile menu whenever the route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+    setActiveDropdown(null);
+  }, [location.pathname]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,14 +49,14 @@ const Header: React.FC = () => {
       href: '/what-we-do',
       hasDropdown: true,
       dropdownItems: [
-        'Custom Software Development',
-        'AI & Machine Learning',
-        'Data Engineering',
-        'Healthcare Solutions',
-        'Web Development',
-        'Mobile Development',
-        'Cloud & DevOps',
-        'IoT Solutions',
+        { label: 'Custom Software Development', href: '/what-we-do/custom-software-development' },
+        { label: 'AI & Machine Learning', href: '/what-we-do/ai-machine-learning' },
+        { label: 'Data Engineering', href: '/what-we-do/data-engineering' },
+        { label: 'Healthcare Solutions', href: '/what-we-do/healthcare-solutions' },
+        { label: 'Web Development', href: '/what-we-do/web-development' },
+        { label: 'Mobile Development', href: '/what-we-do/mobile-development' },
+        { label: 'Cloud & DevOps', href: '/what-we-do/cloud-devops' },
+        { label: 'IoT Solutions', href: '/what-we-do/iot-solutions' },
       ],
     },
     {
@@ -50,12 +64,12 @@ const Header: React.FC = () => {
       href: '/solutions',
       hasDropdown: true,
       dropdownItems: [
-        'Digital Transformation',
-        'Enterprise Applications',
-        'AI Automation',
-        'Healthcare Platforms',
-        'Business Intelligence',
-        'Cloud Migration',
+        { label: 'Digital Transformation', href: '/solutions/digital-transformation' },
+        { label: 'Enterprise Applications', href: '/solutions/enterprise-applications' },
+        { label: 'AI Automation', href: '/solutions/ai-automation' },
+        { label: 'Healthcare Platforms', href: '/solutions/healthcare-platforms' },
+        { label: 'Business Intelligence', href: '/solutions/business-intelligence' },
+        { label: 'Cloud Migration', href: '/solutions/cloud-migration' },
       ],
     },
     {
@@ -63,14 +77,14 @@ const Header: React.FC = () => {
       href: '/industries',
       hasDropdown: true,
       dropdownItems: [
-        'Healthcare',
-        'Finance & Banking',
-        'Retail',
-        'Manufacturing',
-        'Education',
-        'Logistics',
-        'Real Estate',
-        'Travel & Hospitality',
+        { label: 'Healthcare', href: '/industries/healthcare' }, // ✅ routes to HealthcareManagement
+        { label: 'Finance & Banking', href: '/industries/finance-banking' },
+        { label: 'Retail', href: '/industries/retail' },
+        { label: 'Manufacturing', href: '/industries/manufacturing' },
+        { label: 'Education', href: '/industries/education' },
+        { label: 'Logistics', href: '/industries/logistics' },
+        { label: 'Real Estate', href: '/industries/real-estate' },
+        { label: 'Travel & Hospitality', href: '/industries/travel-hospitality' },
       ],
     },
     {
@@ -78,12 +92,12 @@ const Header: React.FC = () => {
       href: '/insights',
       hasDropdown: true,
       dropdownItems: [
-        'Blogs',
-        'Technology Trends',
-        'AI Insights',
-        'Case Studies',
-        'White Papers',
-        'Success Stories',
+        { label: 'Blogs', href: '/insights/blogs' },
+        { label: 'Technology Trends', href: '/insights/technology-trends' },
+        { label: 'AI Insights', href: '/insights/ai-insights' },
+        { label: 'Case Studies', href: '/insights/case-studies' },
+        { label: 'White Papers', href: '/insights/white-papers' },
+        { label: 'Success Stories', href: '/insights/success-stories' },
       ],
     },
     { label: 'About Us', href: '/about' },
@@ -117,8 +131,8 @@ const Header: React.FC = () => {
         >
           {/* Logo with slow cross-fade on hover */}
           <div className="flex-shrink-0 flex items-center mr-6">
-            <a
-              href="/"
+            <Link
+              to="/"
               className="flex items-center relative"
               onMouseEnter={() => setIsLogoHovered(true)}
               onMouseLeave={() => setIsLogoHovered(false)}
@@ -140,7 +154,7 @@ const Header: React.FC = () => {
                   isLogoHovered ? 'opacity-100' : 'opacity-0'
                 }`}
               />
-            </a>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
@@ -154,8 +168,8 @@ const Header: React.FC = () => {
                 }
                 onMouseLeave={() => setActiveDropdown(null)}
               >
-                <a
-                  href={item.href}
+                <Link
+                  to={item.href}
                   className={`flex items-center font-medium hover:text-[#006BB8] transition-colors duration-200 py-1 whitespace-nowrap ${
                     isScrolled
                       ? 'text-[13px] text-[#1A1A1A]'
@@ -180,7 +194,7 @@ const Header: React.FC = () => {
                       />
                     </svg>
                   )}
-                </a>
+                </Link>
 
                 {/* Dropdown — Enhanced Glassmorphism when scrolled */}
                 {item.hasDropdown && activeDropdown === item.label && (
@@ -202,17 +216,17 @@ const Header: React.FC = () => {
                       }
                     >
                       {item.dropdownItems?.map((dropItem, idx) => (
-                        <a
+                        <Link
                           key={idx}
-                          href="#"
+                          to={dropItem.href}
                           className={`block px-5 py-2.5 text-[14px] font-medium transition-all duration-200 ${
                             isScrolled
                               ? 'text-[#1A1A1A] hover:bg-white/40 hover:text-[#006BB8]'
                               : 'text-[#4A4A4A] hover:bg-[#EAF5FF] hover:text-[#006BB8]'
                           } hover:pl-6`}
                         >
-                          {dropItem}
-                        </a>
+                          {dropItem.label}
+                        </Link>
                       ))}
                     </div>
                   </div>
@@ -223,8 +237,8 @@ const Header: React.FC = () => {
 
           {/* CTA Button */}
           <div className="hidden xl:block ml-6">
-            <a
-              href="/contact"
+            <Link
+              to="/contact"
               className={`inline-flex items-center bg-[#006BB8] text-[#FFFFFF] font-semibold rounded-full hover:bg-[#004A80] transition-all duration-300 shadow-md hover:shadow-lg whitespace-nowrap ${
                 isScrolled ? 'px-4 py-1.5 text-xs' : 'px-6 py-3 text-sm'
               }`}
@@ -243,7 +257,7 @@ const Header: React.FC = () => {
                   d="M17 8l4 4m0 0l-4 4m4-4H3"
                 />
               </svg>
-            </a>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -269,9 +283,7 @@ const Header: React.FC = () => {
       {isMobileMenuOpen && (
         <div
           className={`xl:hidden border-t border-white/20 absolute w-full left-0 shadow-lg ${
-            isScrolled
-              ? 'rounded-b-[20px]'
-              : 'bg-[#EAF5FF]'
+            isScrolled ? 'rounded-b-[20px]' : 'bg-[#EAF5FF]'
           }`}
           style={
             isScrolled
@@ -286,8 +298,9 @@ const Header: React.FC = () => {
           <div className="px-4 pt-2 pb-6 space-y-1 max-h-[calc(100vh-6rem)] overflow-y-auto">
             {navItems.map((item) => (
               <div key={item.label}>
-                <a
-                  href={item.href}
+                <Link
+                  to={item.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
                   className={`block px-4 py-3 font-semibold rounded-lg transition-colors ${
                     isScrolled
                       ? 'text-[#1A1A1A] hover:bg-white/30 hover:text-[#006BB8]'
@@ -295,21 +308,22 @@ const Header: React.FC = () => {
                   }`}
                 >
                   {item.label}
-                </a>
+                </Link>
                 {item.hasDropdown && item.dropdownItems && (
                   <div className="pl-6 pb-1">
                     {item.dropdownItems.map((dropItem, idx) => (
-                      <a
+                      <Link
                         key={idx}
-                        href="#"
+                        to={dropItem.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
                         className={`block px-4 py-2 text-[13px] rounded-lg transition-colors ${
                           isScrolled
                             ? 'text-[#4A4A4A] hover:bg-white/30 hover:text-[#006BB8]'
                             : 'text-[#4A4A4A] hover:bg-[#FFFFFF]/20 hover:text-[#006BB8]'
                         }`}
                       >
-                        {dropItem}
-                      </a>
+                        {dropItem.label}
+                      </Link>
                     ))}
                   </div>
                 )}
@@ -317,12 +331,13 @@ const Header: React.FC = () => {
             ))}
 
             <div className="pt-4 mt-2 border-t border-white/20">
-              <a
-                href="/contact"
+              <Link
+                to="/contact"
+                onClick={() => setIsMobileMenuOpen(false)}
                 className="block w-full text-center px-6 py-4 bg-[#006BB8] text-[#FFFFFF] font-semibold rounded-lg hover:bg-[#004A80] transition-colors"
               >
                 Talk to an Expert
-              </a>
+              </Link>
             </div>
           </div>
         </div>
