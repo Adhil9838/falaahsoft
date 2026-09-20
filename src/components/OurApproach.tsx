@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Layers,
@@ -66,17 +66,48 @@ const slides: Slide[] = [
   },
 ];
 
+const AUTO_SWAP_MS = 5000;
+
 const OurApproach: React.FC = () => {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const timerRef = useRef<number | null>(null);
 
   const slide = slides[current];
   const total = slides.length;
 
-  const paginate = (dir: number) => {
-    setDirection(dir);
-    setCurrent((prev) => (prev + dir + total) % total);
-  };
+  const paginate = useCallback(
+    (dir: number) => {
+      setDirection(dir);
+      setCurrent((prev) => (prev + dir + total) % total);
+    },
+    [total]
+  );
+
+  const goTo = useCallback(
+    (index: number) => {
+      setDirection(index > current ? 1 : -1);
+      setCurrent(index);
+    },
+    [current]
+  );
+
+  // Auto-swap every 5 seconds (resets on manual navigation / hover pause)
+  useEffect(() => {
+    if (isPaused) return;
+
+    timerRef.current = window.setInterval(() => {
+      paginate(1);
+    }, AUTO_SWAP_MS);
+
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  }, [paginate, isPaused, current]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -85,7 +116,7 @@ const OurApproach: React.FC = () => {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, []);
+  }, [paginate]);
 
   const contentVariants = {
     enter: (dir: number) => ({ opacity: 0, y: dir > 0 ? 24 : -24 }),
@@ -262,6 +293,8 @@ const OurApproach: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-80px' }}
               transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
               className="relative flex-1 overflow-hidden rounded-[20px] border border-[#E2E8F0] bg-white/80 backdrop-blur-xl shadow-[0_1px_2px_rgba(15,23,42,0.04),0_20px_50px_-24px_rgba(15,23,42,0.18)]"
             >
               <div className="pointer-events-none absolute -right-6 -top-10 select-none">
@@ -315,10 +348,7 @@ const OurApproach: React.FC = () => {
                       {slides.map((s, i) => (
                         <button
                           key={s.id}
-                          onClick={() => {
-                            setDirection(i > current ? 1 : -1);
-                            setCurrent(i);
-                          }}
+                          onClick={() => goTo(i)}
                           aria-label={`Go to ${s.title}`}
                           className="group relative h-1 flex-1 overflow-hidden rounded-full bg-[#E2E8F0] transition-colors hover:bg-[#CBD5E1] focus:outline-none"
                         >

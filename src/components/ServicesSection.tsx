@@ -6,7 +6,6 @@ import {
   Globe2,
   Smartphone,
   CloudCog,
-  ArrowRight,
   Sparkles,
   Target,
   Users,
@@ -15,8 +14,6 @@ import {
 
 /* ------------------------------------------------------------------ */
 /*  🔽 Import your promo background image here                         */
-/*  Replace the path below with your actual image location.            */
-/*  Works with JPG, PNG, WEBP, AVIF, etc. (handled by your bundler)    */
 /* ------------------------------------------------------------------ */
 
 import promoImage from '../assets/Our_servie.png';
@@ -62,6 +59,8 @@ function useInView<T extends HTMLElement>(
 type Service = {
   title: string;
   description: string;
+  /** NEW: extra context paragraph that fills the lower area of the card */
+  context: string;
   icon: React.ReactNode;
   iconBg?: string;
   hoverIconColor: string;
@@ -73,7 +72,7 @@ type ProofIndicator = {
 };
 
 /* ------------------------------------------------------------------ */
-/*  Data                                                               */
+/*  Data — each service now has a real context paragraph               */
 /* ------------------------------------------------------------------ */
 
 const services: Service[] = [
@@ -81,6 +80,8 @@ const services: Service[] = [
     title: 'Artificial Intelligence & Machine Learning',
     description:
       'Custom AI/ML models, predictive analytics, and intelligent automation.',
+    context:
+      'We design, train, and deploy models that turn your raw data into decisions — from recommendation engines to vision-based quality checks — fully integrated with your existing systems.',
     icon: (
       <BrainCircuit
         className="h-[22px] w-[22px] text-blue-600 transition-transform duration-300 ease-out group-hover:scale-[1.08] group-hover:rotate-[2deg]"
@@ -88,13 +89,14 @@ const services: Service[] = [
         aria-hidden="true"
       />
     ),
-    
     hoverIconColor: 'group-hover:text-blue-700',
   },
   {
     title: 'Data Engineering & Cloud Platforms',
     description:
       'ETL pipelines, data warehousing, and cloud deployment solutions.',
+    context:
+      'From ingestion to insight, we build reliable pipelines and modern warehouses so your teams always work with clean, timely, and trustworthy data at any scale.',
     icon: (
       <DatabaseZap
         className="h-[22px] w-[22px] text-cyan-600 transition-transform duration-300 ease-out group-hover:scale-[1.08] group-hover:rotate-[2deg]"
@@ -110,6 +112,8 @@ const services: Service[] = [
     title: 'Healthcare Technology Solutions',
     description:
       'Telemedicine platforms, patient management, and AI diagnostic systems.',
+    context:
+      'We deliver compliant, patient-first digital health products that improve clinical workflows, expand access, and support better outcomes across the care journey.',
     icon: (
       <HeartPulse
         className="h-[22px] w-[22px] text-rose-500 transition-transform duration-300 ease-out group-hover:scale-[1.08] group-hover:rotate-[2deg]"
@@ -125,6 +129,8 @@ const services: Service[] = [
     title: 'Web Application Development',
     description:
       'Full-stack development with modern technologies and scalable architecture.',
+    context:
+      'We craft fast, secure, and accessible web applications — from customer-facing portals to internal tools — engineered to scale with your business.',
     icon: (
       <Globe2
         className="h-[22px] w-[22px] text-emerald-600 transition-transform duration-300 ease-out group-hover:scale-[1.08] group-hover:rotate-[2deg]"
@@ -139,6 +145,8 @@ const services: Service[] = [
   {
     title: 'Mobile Application Development',
     description: 'Native iOS & Android apps with seamless user experiences.',
+    context:
+      'We build intuitive mobile products that feel at home on every device — with smooth performance, offline support, and experiences your users keep coming back to.',
     icon: (
       <Smartphone
         className="h-[22px] w-[22px] text-sky-600 transition-transform duration-300 ease-out group-hover:scale-[1.08] group-hover:rotate-[2deg]"
@@ -154,6 +162,8 @@ const services: Service[] = [
     title: 'Cloud & DevOps',
     description:
       'CI/CD pipelines, containerization, and infrastructure management.',
+    context:
+      'We automate how you build, test, and ship — with secure cloud infrastructure, containerized workloads, and pipelines that let your team release with confidence.',
     icon: (
       <CloudCog
         className="h-[22px] w-[22px] text-indigo-500 transition-transform duration-300 ease-out group-hover:scale-[1.08] group-hover:rotate-[2deg]"
@@ -190,7 +200,7 @@ const STAGGER_MS = 400;
 const ITEM_DURATION = 800;
 
 /* ------------------------------------------------------------------ */
-/*  Subtle technical grid — reduced opacity, larger cells              */
+/*  Subtle technical grid                                              */
 /* ------------------------------------------------------------------ */
 
 const TechnicalGrid: React.FC = () => (
@@ -205,19 +215,10 @@ const TechnicalGrid: React.FC = () => (
   />
 );
 
-/* ------------------------------------------------------------------ */
-/*  Soft glow orbs — very subtle depth, no busy network lines          */
-/* ------------------------------------------------------------------ */
-
-const SoftGlow: React.FC = () => ( null
-);
+const SoftGlow: React.FC = () => (null);
 
 /* ------------------------------------------------------------------ */
 /*  PromoPanel — slides in from the LEFT                               */
-/*                                                                     */
-/*  Background now uses an imported image via <img>. The original      */
-/*  gradient is kept as a fallback and a dark overlay sits on top      */
-/*  so the white text stays readable over any photo.                   */
 /* ------------------------------------------------------------------ */
 
 const PromoPanel: React.FC = () => {
@@ -226,43 +227,31 @@ const PromoPanel: React.FC = () => {
   return (
     <aside
       ref={ref}
-      className={`relative flex w-full flex-col justify-between overflow-hidden rounded-2xl bg-gradient-to-br from-[#0a1a35] via-[#0f2847] to-[#1a4a7a] transition-all duration-1000 ease-out will-change-transform sm:rounded-3xl lg:w-[30%] lg:shrink-0 ${
+      className={`relative flex w-full flex-col justify-between overflow-hidden rounded-2xl bg-gradient-to-br from-[#0a1a35] via-[#0f2847] to-[#1a4a7a] transition-all duration-1000 ease-out will-change-transform sm:rounded-3xl lg:h-auto lg:w-[30%] lg:shrink-0 ${
         inView ? 'translate-x-0 opacity-100' : '-translate-x-12 opacity-0'
       }`}
       aria-labelledby="promo-heading"
     >
-      {/* ---------------------------------------------------------- */}
-      {/*  Background image layer (imported asset)                    */}
-      {/* ---------------------------------------------------------- */}
       <img
-  src={promoImage}
-  alt=""
-  aria-hidden="true"
-  className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-  loading="lazy"
-  decoding="async"
-/>
+        src={promoImage}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+        loading="lazy"
+        decoding="async"
+      />
 
-      {/* ---------------------------------------------------------- */}
-      {/*  Dark overlay so white text remains legible over the image  */}
-      {/*  Tune the opacity values below to taste.                    */}
-      {/* ---------------------------------------------------------- */}
       <div
         className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#0a1a35]/85 via-[#0f2847]/75 to-[#1a4a7a]/70"
         aria-hidden="false"
       />
 
-      {/* Very subtle technical grid */}
       <TechnicalGrid />
-
       <SoftGlow />
 
-      {/* Content wrapper */}
-      <div className="relative z-10 flex h-full flex-col justify-between px-6 py-8 lg:px-8 lg:py-10">
-        {/* Top block */}
+      <div className="relative z-10 flex h-full flex-col justify-between px-6 py-10 lg:px-8 lg:py-14">
         <div className="flex flex-col">
-          {/* Icon badge */}
-          <div className="mb-6 flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.08] ring-1 ring-white/10 backdrop-blur-sm">
+          <div className="mb-7 flex h-11 w-11 items-center justify-center rounded-xl bg-white/[0.08] ring-1 ring-white/10 backdrop-blur-sm">
             <Sparkles
               className="h-5 w-5 text-cyan-300"
               strokeWidth={1.7}
@@ -270,26 +259,22 @@ const PromoPanel: React.FC = () => {
             />
           </div>
 
-          {/* Heading */}
           <h2
             id="promo-heading"
-            className="mb-4 text-[1.2rem] font-bold leading-[1.2] tracking-tight text-white sm:text-xl lg:text-[1.3rem] xl:text-[1.4rem]"
+            className="mb-5 text-[1.3rem] font-bold leading-[1.2] tracking-tight text-white sm:text-xl lg:text-[1.45rem] xl:text-[1.55rem]"
           >
             Technology Guided by Industry Knowledge
           </h2>
 
-          {/* Body */}
-          <p className="max-w-[22rem] text-[12.5px] leading-relaxed text-blue-100/80">
+          <p className="max-w-[22rem] text-[13px] leading-relaxed text-blue-100/80">
             We bring together deep industry experience and modern technology to
             solve complex business challenges and create lasting value.
           </p>
         </div>
 
-        {/* Bottom block */}
-        <div className="mt-10">
-          {/* Handwritten decorative line */}
+        <div className="mt-12">
           <p
-            className="mb-5 text-right font-serif text-[11px] italic leading-snug text-cyan-200/60"
+            className="mb-6 text-right font-serif text-[11.5px] italic leading-snug text-cyan-200/60"
             aria-hidden="true"
           >
             Smarter Solutions
@@ -297,12 +282,11 @@ const PromoPanel: React.FC = () => {
             Brighter Tomorrow
           </p>
 
-          {/* Proof indicators */}
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-white/15 pt-4">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-white/15 pt-5">
             {proofIndicators.map((item) => (
               <div key={item.label} className="flex items-center gap-2">
                 {item.icon}
-                <span className="text-[11px] font-medium tracking-wide text-white/80">
+                <span className="text-[11.5px] font-medium tracking-wide text-white/80">
                   {item.label}
                 </span>
               </div>
@@ -315,8 +299,7 @@ const PromoPanel: React.FC = () => {
 };
 
 /* ------------------------------------------------------------------ */
-/*  ServiceItem — slides in from the RIGHT, slow staggered reveal      */
-/*  Icon sits inline (left of title/description) instead of above      */
+/*  ServiceItem — icon + title + description + context paragraph       */
 /* ------------------------------------------------------------------ */
 
 interface ServiceItemProps {
@@ -327,7 +310,7 @@ interface ServiceItemProps {
 
 const ServiceItem: React.FC<ServiceItemProps> = ({ service, index, start }) => (
   <li
-    className={`group relative flex items-start gap-3 rounded-xl border border-slate-100 bg-white p-3.5 ease-out hover:-translate-y-1 hover:border-slate-200 hover:shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] ${
+    className={`group relative flex flex-col gap-4 rounded-xl border border-slate-100 bg-white p-4 ease-out hover:-translate-y-1 hover:border-slate-200 hover:shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] lg:min-h-[200px] lg:p-5 ${
       start ? 'translate-x-0 opacity-100' : 'translate-x-12 opacity-0'
     }`}
     style={{
@@ -337,22 +320,29 @@ const ServiceItem: React.FC<ServiceItemProps> = ({ service, index, start }) => (
       transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)',
     }}
   >
-    {/* Icon — left of the text, vertically centered with title row */}
-    <div
-  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-all duration-300 group-hover:scale-105"
-  aria-hidden="true"
->
-  {service.icon}
-</div>
+    {/* Top: icon + title + short description */}
+    <div className="flex items-start gap-3">
+      <div
+        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg transition-all duration-300 group-hover:scale-105"
+        aria-hidden="true"
+      >
+        {service.icon}
+      </div>
 
-    <div className="min-w-0">
-      <h3 className="text-[13px] font-bold leading-snug text-slate-800 transition-colors duration-300 group-hover:text-blue-600">
-        {service.title}
-      </h3>
-      <p className="mt-1 text-xs leading-relaxed text-slate-400">
-        {service.description}
-      </p>
+      <div className="min-w-0">
+        <h3 className="text-[14px] font-bold leading-snug text-slate-800 transition-colors duration-300 group-hover:text-blue-600">
+          {service.title}
+        </h3>
+        <p className="mt-1.5 text-[12.5px] leading-relaxed text-slate-400">
+          {service.description}
+        </p>
+      </div>
     </div>
+
+    {/* Bottom: real context paragraph that fills the empty space */}
+    <p className="border-t border-slate-100 pt-3 text-[12px] leading-relaxed text-slate-500">
+      {service.context}
+    </p>
   </li>
 );
 
@@ -366,17 +356,17 @@ const ServicesSection: React.FC = () => {
 
   return (
     <section
-      className="overflow-hidden bg-slate-50/80 px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-16"
+      className="w-full overflow-hidden bg-slate-50/80 px-3 py-16 sm:px-4 sm:py-24 lg:px-6 lg:py-32"
       aria-labelledby="services-heading"
     >
-      <div className="mx-auto flex max-w-[75rem] flex-col gap-4 rounded-2xl border border-slate-200/60 bg-white p-3 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_24px_-8px_rgba(0,0,0,0.04)] sm:rounded-3xl sm:p-4 lg:flex-row lg:gap-0 lg:p-4">
+      <div className="mx-auto flex w-full flex-col gap-4 rounded-2xl border border-slate-200/60 bg-white p-3 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_24px_-8px_rgba(0,0,0,0.04)] sm:rounded-3xl sm:p-4 lg:min-h-[640px] lg:flex-row lg:gap-0 lg:p-6">
         <PromoPanel />
 
         <div
           ref={rightPanelRef}
-          className="flex flex-col px-2 py-4 sm:px-4 lg:w-[70%] lg:px-6 lg:py-5"
+          className="flex flex-col px-2 py-4 sm:px-4 lg:w-[70%] lg:px-8 lg:py-6"
         >
-          <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
             <div>
               <p
                 id="services-heading"
@@ -390,10 +380,10 @@ const ServicesSection: React.FC = () => {
             </div>
           </div>
 
-          <hr className="mb-4 border-slate-100" />
+          <hr className="mb-6 border-slate-100" />
 
           <ul
-            className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3"
+            className="grid flex-1 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5"
             role="list"
           >
             {services.map((service, i) => (

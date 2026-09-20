@@ -7,10 +7,6 @@ import {
   House,
   ShieldCheck,
   ArrowRight,
-  Users,
-  Building2,
-  Settings2,
-  BadgeCheck,
 } from "lucide-react";
 
 // 👇 Background image import
@@ -274,8 +270,8 @@ function ProductCard({
       {/* ---------- Content ---------- */}
       <div className="relative flex items-start gap-3">
         <div className="flex h-12 w-12 shrink-0 items-center justify-center transition-transform duration-500 ease-out group-hover:scale-[1.08]">
-  <Icon className={`h-7 w-7 ${accent.text}`} strokeWidth={1.8} aria-hidden="true" />
-</div>
+          <Icon className={`h-7 w-7 ${accent.text}`} strokeWidth={1.8} aria-hidden="true" />
+        </div>
 
         <div className="min-w-0 pt-0.5">
           <h3 className="text-lg font-bold leading-tight tracking-tight text-slate-900">
@@ -315,45 +311,6 @@ function ProductCard({
         </span>
       </div>
     </article>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Statistics row                                                     */
-/* ------------------------------------------------------------------ */
-
-function StatsRow({ inView }: { inView: boolean }) {
-  const stats = [
-    { value: "6", label: "Industry Solutions", icon: Building2 },
-    { value: "100+", label: "Happy Clients", icon: Users },
-    { value: "Scalable", label: "For Your Growth", icon: Settings2 },
-    { value: "Trusted", label: "Across Industries", icon: BadgeCheck },
-  ];
-
-  return (
-    <div
-      className={`mt-16 grid grid-cols-2 gap-6 border-t border-slate-200/70 pt-10 transition-all duration-700 ease-out sm:grid-cols-4 sm:gap-8 ${
-        inView ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"
-      }`}
-      style={{ transitionDelay: inView ? "600ms" : "0ms" }}
-    >
-      {stats.map((stat) => {
-        const Icon = stat.icon;
-        return (
-          <div key={stat.label} className="flex flex-col items-center text-center">
-            <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 ring-1 ring-blue-100">
-              <Icon className="h-4 w-4 text-blue-600" strokeWidth={1.8} aria-hidden="true" />
-            </div>
-            <p className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
-              {stat.value}
-            </p>
-            <p className="mt-0.5 text-xs font-medium uppercase tracking-widest text-slate-400">
-              {stat.label}
-            </p>
-          </div>
-        );
-      })}
-    </div>
   );
 }
 
@@ -424,8 +381,6 @@ export default function Product() {
             />
           ))}
         </div>
-
-        <StatsRow inView={inView} />
       </div>
     </section>
   );
