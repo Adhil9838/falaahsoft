@@ -17,8 +17,6 @@ import {
   TrendingUp,
   Package,
   FileText,
-  Menu,
-  X,
   Heart,
   Lock,
   Key,
@@ -300,7 +298,7 @@ function useScrollReveal<T extends HTMLElement>(
     rootMargin?: string;
     triggerOnce?: boolean;
   } = {}
-): { ref: React.RefObject<T>; isVisible: boolean } {
+): { ref: React.RefObject<T> |null; isVisible: boolean } {
   const {
     threshold = 0.15,
     rootMargin = "0px 0px -60px 0px",
@@ -342,7 +340,7 @@ function useScrollReveal<T extends HTMLElement>(
     return () => observer.disconnect();
   }, [threshold, rootMargin, triggerOnce, prefersReducedMotion]);
 
-  return { ref, isVisible };
+  return { ref: ref as React.RefObject<T>, isVisible };
 }
 
 // ---------------------------------------------------------------------------
@@ -1749,7 +1747,6 @@ function ProductTabContent({ activeTab }: { activeTab: string }) {
 
 const HealthcareManagement: React.FC = () => {
   const [activeTab, setActiveTab] = useState("Dashboard");
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [workflowActiveStep, setWorkflowActiveStep] = useState<number | null>(
     null
   );

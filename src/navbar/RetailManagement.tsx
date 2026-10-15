@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, useInView, AnimatePresence } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import {
   ShoppingBag,
@@ -51,15 +51,10 @@ import {
   Gauge,
   Filter,
   Download,
-  Menu,
 } from 'lucide-react';
 
 // ─── TYPES ────────────────────────────────────────────────────────────────────
 
-interface NavItem {
-  label: string;
-  href: string;
-}
 
 interface ChallengeCard {
   icon: React.ReactNode;
@@ -144,13 +139,7 @@ interface Benefit {
 
 // ─── DATA ─────────────────────────────────────────────────────────────────────
 
-const NAV_ITEMS: NavItem[] = [
-  { label: 'Platform', href: '#platform' },
-  { label: 'Dashboard', href: '#dashboard' },
-  { label: 'POS', href: '#pos' },
-  { label: 'Inventory', href: '#inventory' },
-  { label: 'Pricing', href: '#pricing' },
-];
+
 
 const CHALLENGES: ChallengeCard[] = [
   {
@@ -483,104 +472,6 @@ const Badge: React.FC<{
 
 // ─── NAVBAR ───────────────────────────────────────────────────────────────────
 
-const Navbar: React.FC = () => {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  return (
-    <motion.nav
-      initial={{ y: -80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-white/80 backdrop-blur-xl border-b border-slate-200/60 shadow-sm'
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 md:h-20">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-              <Store className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-lg font-bold text-slate-900 tracking-tight">
-              Retail<span className="text-indigo-600">OS</span>
-            </span>
-          </div>
-
-          <div className="hidden md:flex items-center gap-1">
-            {NAV_ITEMS.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100/80 transition-all duration-200"
-              >
-                {item.label}
-              </a>
-            ))}
-          </div>
-
-          <div className="hidden md:flex items-center gap-3">
-            <button className="px-4 py-2 text-sm font-medium text-slate-700 hover:text-slate-900 transition-colors">
-              Sign In
-            </button>
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              className="px-5 py-2.5 text-sm font-semibold text-white bg-slate-900 rounded-xl hover:bg-slate-800 transition-colors shadow-lg shadow-slate-900/10"
-            >
-              Book a Demo
-            </motion.button>
-          </div>
-
-          <button
-            className="md:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-        </div>
-      </div>
-
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-b border-slate-200 overflow-hidden"
-          >
-            <div className="px-4 py-4 space-y-1">
-              {NAV_ITEMS.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="block px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
-                >
-                  {item.label}
-                </a>
-              ))}
-              <div className="pt-2 border-t border-slate-100">
-                <button className="w-full px-4 py-3 text-sm font-semibold text-white bg-slate-900 rounded-xl">
-                  Book a Demo
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.nav>
-  );
-};
 
 // ─── HERO SECTION ─────────────────────────────────────────────────────────────
 
@@ -2376,40 +2267,6 @@ const FinalCTASection: React.FC = () => {
 
 // ─── FOOTER ───────────────────────────────────────────────────────────────────
 
-const Footer: React.FC = () => {
-  return (
-    <footer className="bg-slate-900 py-12 border-t border-slate-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center">
-              <Store className="w-4 h-4 text-white" />
-            </div>
-            <span className="text-sm font-bold text-white">
-              Retail<span className="text-indigo-400">OS</span>
-            </span>
-          </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-6">
-            {['Privacy', 'Terms', 'Security', 'Contact'].map((item) => (
-              <a
-                key={item}
-                href="#"
-                className="text-xs text-slate-400 hover:text-white transition-colors"
-              >
-                {item}
-              </a>
-            ))}
-          </div>
-
-          <p className="text-xs text-slate-500">
-            © {new Date().getFullYear()} RetailOS. All rights reserved.
-          </p>
-        </div>
-      </div>
-    </footer>
-  );
-};
 
 // ─── MAIN PAGE COMPONENT ─────────────────────────────────────────────────────
 

@@ -1,11 +1,10 @@
-import React, { useState, useMemo, useRef, useEffect } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import { motion, useInView, useReducedMotion, AnimatePresence } from "framer-motion";
 import {
   FileText,
   BookOpen,
   ArrowRight,
   Search,
-  Cpu,
   Cloud,
   Database,
   Wifi,
@@ -15,7 +14,6 @@ import {
   Sparkles,
   Globe,
   Layers,
-  Zap,
   Brain,
   Network,
   Settings,
@@ -233,6 +231,13 @@ const stats = [
   { value: "Enterprise", label: "Technology Perspective" },
 ];
 
+// ─── Animation Constants ─────────────────────────────────────────────────────
+
+// Framer Motion requires a tuple of exactly 4 numbers for cubic-bezier easing.
+// Using `as const` ensures the array is inferred as a readonly tuple,
+// which satisfies the `Easing` type and resolves TS2322 errors.
+const EASE = [0.25, 0.46, 0.45, 0.94] as const;
+
 // ─── Animation Variants ──────────────────────────────────────────────────────
 
 const fadeUp = {
@@ -240,7 +245,7 @@ const fadeUp = {
   visible: (i: number = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, delay: i * 0.1, ease: [0.25, 0.46, 0.45, 0.94] },
+    transition: { duration: 0.6, delay: i * 0.1, ease: EASE },
   }),
 };
 
@@ -257,7 +262,7 @@ const scaleIn = {
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
+    transition: { duration: 0.5, ease: EASE },
   },
 };
 
@@ -290,7 +295,7 @@ function SectionReveal({
         visible: {
           opacity: 1,
           y: 0,
-          transition: { duration: 0.7, delay, ease: [0.25, 0.46, 0.45, 0.94] },
+          transition: { duration: 0.7, delay, ease: EASE },
         },
       }}
       className={className}
@@ -646,7 +651,7 @@ export default function WhitePaperPage() {
             <motion.div
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.9, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+              transition={{ duration: 0.9, delay: 0.4, ease: EASE }}
               className="hidden lg:block"
             >
               <HeroVisual />

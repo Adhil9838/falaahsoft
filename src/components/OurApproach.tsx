@@ -119,18 +119,18 @@ const OurApproach: React.FC = () => {
   }, [paginate]);
 
   const contentVariants = {
-    enter: (dir: number) => ({ opacity: 0, y: dir > 0 ? 24 : -24 }),
-    center: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
-    },
-    exit: (dir: number) => ({
-      opacity: 0,
-      y: dir > 0 ? -24 : 24,
-      transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
-    }),
-  };
+  enter: (dir: number) => ({ opacity: 0, y: dir > 0 ? 24 : -24 }),
+  center: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const },
+  },
+  exit: (dir: number) => ({
+    opacity: 0,
+    y: dir > 0 ? -24 : 24,
+    transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] as const },
+  }),
+};
 
   return (
     <section className="relative bg-[#F8FAFC] py-24 lg:py-32 overflow-hidden">

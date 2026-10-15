@@ -24,11 +24,9 @@ import {
   UserCog,
   ClipboardList,
   Gauge,
-  Settings2,
   Receipt,
   PieChart,
   LineChart,
-  Building2,
   Cog,
   PackageCheck,
   BarChart3,
@@ -36,11 +34,7 @@ import {
   Warehouse,
   ClipboardCheck,
   Drill,
-  Thermometer,
   AlertTriangle,
-  CircleCheck,
-  Timer,
-  CalendarClock,
 } from "lucide-react";
 
 // ---------------------------------------------------------------------------
@@ -345,7 +339,7 @@ function useScrollReveal<T extends HTMLElement>(
     return () => observer.disconnect();
   }, [threshold, rootMargin, triggerOnce, prefersReducedMotion]);
 
-  return { ref, isVisible };
+  return { ref: ref as React.RefObject<T>, isVisible };
 }
 
 // ---------------------------------------------------------------------------

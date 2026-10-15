@@ -7,7 +7,6 @@ import {
   Eye,
   MessageSquare,
   Layers,
-  Cpu,
   Database,
   Cloud,
   Workflow,

@@ -11,11 +11,11 @@ import {
   Server,
   Zap,
   CheckCircle,
-  Shield,
+
   TrendingUp,
   Workflow,
   Box,
-  LineChart,
+
   Brain,
   ArrowRight,
   ChevronRight,
@@ -28,7 +28,6 @@ import {
   Table2,
   Braces,
   CloudCog,
-  MonitorSmartphone,
   Building2,
   ShoppingCart,
   Truck,

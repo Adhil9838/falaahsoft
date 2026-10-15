@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, } from 'react';
 import {
   Cloud,
   Server,
@@ -10,7 +10,6 @@ import {
   Activity,
   Database,
   RefreshCw,
-  Loader,
   Lock,
   BarChart3,
   LineChart,
@@ -21,18 +20,14 @@ import {
   Globe,
   ArrowRight,
   ChevronDown,
-  CheckCircle,
   Users,
   HardDrive,
   Key,
   Eye,
-  Terminal,
   Code2,
   TestTube,
   Rocket,
   Monitor,
-  Play,
-  Pause,
 } from 'lucide-react';
 
 // ─── Utility Hook: Intersection Observer ────────────────────────────────────
@@ -122,9 +117,6 @@ const HeroSection: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const heroContent = [
-    { label: 'Cloud & DevOps Solutions', delay: 0.2 },
-  ];
 
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#050a14]">

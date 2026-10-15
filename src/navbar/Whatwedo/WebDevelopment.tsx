@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Globe,
   ShoppingCart,
@@ -8,9 +8,7 @@ import {
   Cpu,
   ChevronRight,
   Layers,
-  Shield,
   Database,
-  Zap,
   CreditCard,
   Cloud,
   BarChart3,
@@ -33,20 +31,17 @@ import {
   Search,
   Bell,
   Settings,
-  MoreHorizontal,
   TrendingUp,
   DollarSign,
   Package,
   UserCheck,
-  Clock,
   CheckCircle2,
   AlertCircle,
   Activity,
   FileText,
-  PieChart,
   Box,
   Lock,
-  RefreshCw,
+
   Headphones,
   Wrench,
   Gauge,
@@ -61,7 +56,7 @@ import {
   Wallet,
   CloudCog,
   Rocket,
-  ShieldCheck,
+
 } from 'lucide-react';
 
 // ---------------------------------------------------------------------------
@@ -109,8 +104,8 @@ interface IndustryItem {
 // Utility: Intersection Observer Hook for scroll animations
 // ---------------------------------------------------------------------------
 
-function useInView(threshold = 0.15): [React.RefObject<HTMLDivElement>, boolean] {
-  const ref = useRef<HTMLDivElement>(null);
+function useInView(threshold = 0.15): [React.RefObject<HTMLDivElement|null>, boolean] {
+  const ref = useRef<HTMLDivElement|null>(null);
   const [isInView, setIsInView] = useState(false);
 
   useEffect(() => {
@@ -156,13 +151,7 @@ function scrollToSection(id: string) {
 // Utility: Staggered animation style helper
 // ---------------------------------------------------------------------------
 
-function fadeUpStyle(isInView: boolean, delay: number): React.CSSProperties {
-  return {
-    opacity: isInView ? 1 : 0,
-    transform: isInView ? 'translateY(0)' : 'translateY(32px)',
-    transition: `opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
-  };
-}
+
 
 // ---------------------------------------------------------------------------
 // Animated Section Wrapper

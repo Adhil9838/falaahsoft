@@ -24,7 +24,6 @@ import {
   Cloud,
   GitBranch,
   ChevronDown,
-  ChevronRight,
   ArrowRight,
   Zap,
   Shield,

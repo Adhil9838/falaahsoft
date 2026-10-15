@@ -27,7 +27,6 @@ import {
   Zap,
   RefreshCw,
   LayoutGrid,
-  LineChart,
   MessageSquare,
   Target,
 } from 'lucide-react';
@@ -261,7 +260,6 @@ function useCountUp(target: number, isInView: boolean, duration = 2000) {
 
   useEffect(() => {
     if (!isInView) return;
-    let start = 0;
     const startTime = performance.now();
     const step = (now: number) => {
       const elapsed = now - startTime;
@@ -358,7 +356,6 @@ function AnimatedCounter({ metric, isInView }: { metric: MetricItem; isInView: b
 
 function StoryCard({ story, index }: { story: SuccessStory; index: number }) {
   const { ref, isInView } = useInView();
-  const [expanded, setExpanded] = useState(false);
 
   return (
     <div
@@ -711,7 +708,7 @@ export default function SuccessStories() {
       <section className="relative py-24 sm:py-32" ref={metricsRef}>
         <div className="max-w-6xl mx-auto px-6 sm:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-            {METRICS.map((metric, i) => (
+            {METRICS.map((metric) => (
               <AnimatedCounter key={metric.label} metric={metric} isInView={metricsInView} />
             ))}
           </div>

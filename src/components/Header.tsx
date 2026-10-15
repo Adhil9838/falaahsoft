@@ -5,7 +5,7 @@ import logoHover from '../assets/hoverlogo.png';
 
 interface DropdownItem {
   label: string;
-  href?: string;
+  href: string;
 }
 
 interface NavItem {
@@ -164,7 +164,7 @@ const Header: React.FC = () => {
                 onMouseLeave={() => setActiveDropdown(null)}
               >
                 <Link
-                  to={item.href}
+                  to={item.href ?? '#'}
                   className={`flex items-center font-medium hover:text-[#006BB8] transition-colors duration-200 py-1 whitespace-nowrap ${
                     isScrolled
                       ? 'text-[13px] text-[#1A1A1A]'
@@ -267,7 +267,7 @@ const Header: React.FC = () => {
             {navItems.map((item) => (
               <div key={item.label}>
                 <Link
-                  to={item.href}
+                  to={item.href ?? '#'}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="block px-4 py-3 font-semibold rounded-lg text-[#1A1A1A] hover:bg-[#EAF5FF] hover:text-[#006BB8] transition-colors"
                 >
